@@ -36,12 +36,17 @@ struct DashboardView: View {
     private var heroPanel: some View {
         Panel {
             VStack(spacing: 14) {
-                PowerRing(inputWatts: monitor.headline?.watts,
-                          batteryWatts: plugged && snapshot.inputWatts != nil ? snapshot.batteryWatts : nil,
-                          fullScale: fullScale,
-                          caption: monitor.headline?.caption,
-                          tint: glowColor)
-                    .padding(.top, 4)
+                GeometryReader { geometry in
+                    PowerRing(inputWatts: monitor.headline?.watts,
+                              batteryWatts: plugged && snapshot.inputWatts != nil ? snapshot.batteryWatts : nil,
+                              fullScale: fullScale,
+                              caption: monitor.headline?.caption,
+                              tint: glowColor,
+                              size: min(geometry.size.width, 280))
+                        .frame(maxWidth: .infinity, maxHeight: .infinity)
+                }
+                .frame(height: 280)
+                .padding(.top, 4)
 
                 FlowRow(spacing: 6) {
                     Pill(text: Text(snapshot.statusText),
@@ -367,3 +372,4 @@ nonisolated struct FlowRow: Layout {
         }
     }
 }
+
