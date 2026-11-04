@@ -22,6 +22,7 @@ struct RootView: View {
                 .tabItem { Label("History", systemImage: "chart.xyaxis.line") }
         }
         .tint(.mwAccent)
+        .background { Color.mwCanvas.ignoresSafeArea() }
         .background { ScreenAwakeHolder() }
         // The layer Picture in Picture draws from has to be on screen for the system
         // to open a window from it, so it sits here, a few points across, for the
