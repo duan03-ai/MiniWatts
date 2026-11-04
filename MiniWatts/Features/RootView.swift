@@ -178,7 +178,14 @@ struct PageScaffold<Content: View>: View {
                     // same frame: the pin is a fixed width, so a `frame(maxWidth:)`
                     // after it cannot narrow it — the content just overflows that frame
                     // by the same amount on both sides and looks exactly as wide as before.
-                    .containerRelativeFrame(.horizontal) { width, _ in min(width, 760) }
+                    // Give the Max phones a little more breathing room than the
+                    // compact iPhones, while keeping a 24 pt tablet gutter. The outer
+                    // padding below already contributes 16 pt on each side; subtract
+                    // only the extra inset here so the pinned width still fits.
+                    .containerRelativeFrame(.horizontal) { width, _ in
+                        let extraInset: CGFloat = width >= 600 ? 16 : (width >= 430 ? 8 : 0)
+                        return min(width - extraInset, 760)
+                    }
                     .frame(maxWidth: .infinity)
                 }
             }
@@ -243,3 +250,4 @@ struct EmptyNote: View {
         .frame(maxWidth: .infinity, alignment: .leading)
     }
 }
+
